@@ -5,27 +5,27 @@ ttime = 300;                    % Time for compute the round
 forwarding = 0.95;              % Forwarding probability
 mmnode = round(N*mp);            % Number of malicious nodes
 W = 4; %maximum route length for active detection
-G = 0.95; %gamma coefficent, ¾îÅ×´º¿¡ÀÌ¼ÇÀº ÀÏ´Ü ¾ø´Ù°í °¡Á¤
+G = 0.95; %gamma coefficent, ì–´í…Œë‰´ì—ì´ì…˜ì€ ì¼ë‹¨ ì—†ë‹¤ê³  ê°€ì •
 delta = 0.5;
-T_mat = zeros(N,N,10); % ¶ó¿îµåº° °¢ ³ëµå¿¡´ëÇÑ trust¸¦ ¸ğÀº matrix
+T_mat = zeros(N,N,10); % ë¼ìš´ë“œë³„ ê° ë…¸ë“œì—ëŒ€í•œ trustë¥¼ ëª¨ì€ matrix
 alpha = 1;
 % Set honesty nodes & malicious nodes
 % honesty node : 0, malicious node : 1
 node = zeros(N,ttime/30+2);
-temp_mali = randperm(N);% temp_mali¿¡¼­´Â NÀ» ÀÓÀÇ·Î ¹è¿­½ÃÅ´
+temp_mali = randperm(N);% temp_maliì—ì„œëŠ” Nì„ ì„ì˜ë¡œ ë°°ì—´ì‹œí‚´
 mali_node = temp_mali(1:mmnode);
-%mali_node´Â N°³ ³ëµåÁß mnode°³¼ö¸¸Å­ ÀÓÀÇ·Î mali ³ëµå¸¦ ¼±Ãâ
+%mali_nodeëŠ” Nê°œ ë…¸ë“œì¤‘ mnodeê°œìˆ˜ë§Œí¼ ì„ì˜ë¡œ mali ë…¸ë“œë¥¼ ì„ ì¶œ
 for l = 1:N
     if sum(l==mali_node) == 1
         node(l,1) = 1;
     end
 end
-%±âÁ¸¿¡ node´Â 92x12 Çà·ÄÀÌ°í 0º¤ÅÍ¿´´Âµ¥, À§¿¡¼­ Á¤ÇÑ mali³ëµå¿¡ ÇØ´çÇÏ´Â ¿µ¿ª¿¡ 1À» ÇÒ´ç½ÃÅ´
+%ê¸°ì¡´ì— nodeëŠ” 92x12 í–‰ë ¬ì´ê³  0ë²¡í„°ì˜€ëŠ”ë°, ìœ„ì—ì„œ ì •í•œ malië…¸ë“œì— í•´ë‹¹í•˜ëŠ” ì˜ì—­ì— 1ì„ í• ë‹¹ì‹œí‚´
 TA = temp_mali(mmnode+1);
 
 
 % Calculate TA's reputation
-d = zeros(1,ttime/30);  %d´Â ¹»±î
+d = zeros(1,ttime/30);  %dëŠ” ë­˜ê¹Œ
 BR = zeros(N,ttime/30);
 GR = zeros(N,ttime/30);
 for i = 1:(ttime/30)    
@@ -49,15 +49,15 @@ for i = 1:(ttime/30)
                     end                                                    
                 end            
             end
-         
+              % end of distance computation 
             temp_size = max(size(neighbor));
             for n = 1:50
                 temp = randperm(temp_size);
                 request_node = neighbor(temp(1));
                 if request_node ~= 0
-                    if node(k,1) == 0 %Çö ³ëµå°¡ Á¤»óÀÏ¶§
-                        % honesty node $»ó´ë¹æÀÌ Á¤»ó³ëµå¸é
-                        if node(request_node,1) == 0 %request node°¡ honest¸é
+                    if node(k,1) == 0 %í˜„ ë…¸ë“œê°€ ì •ìƒì¼ë•Œ
+                        % honesty node $ìƒëŒ€ë°©ì´ ì •ìƒë…¸ë“œë©´
+                        if node(request_node,1) == 0 %request nodeê°€ honestë©´
                             if prob_a(request_node,n) <= forwarding 
                                 if prob_b(request_node,n) <= 0.95
                                     p_events(k,request_node) = p_events(k,request_node) + 1;
@@ -71,7 +71,7 @@ for i = 1:(ttime/30)
                                     p_events(k,request_node) = p_events(k,request_node) + 1;
                                 end
                             end
-                        % malicious node %»ó´ë°¡ mali¸é
+                        % malicious node %ìƒëŒ€ê°€ malië©´
                         else                    
                             
                                 if prob_a(request_node,n) <= alpha 
@@ -91,12 +91,12 @@ for i = 1:(ttime/30)
                                
                         end
                         
-                    else % ¸¸¾à ÇöÀç ³ëµåk°¡ mali ¶ó¸é,,,
-                       % if node(request_node,1) == 1 %¸»¸®³ëµå¿¡°Ô 
+                    else % ë§Œì•½ í˜„ì¬ ë…¸ë“œkê°€ mali ë¼ë©´,,,
+                       % if node(request_node,1) == 1 %ë§ë¦¬ë…¸ë“œì—ê²Œ 
                         %    n_events(k, request_node) = n_events(k, request_node) + 1;
-                       % else %Á¤»ó³ëµå¿¡°Ô
+                       % else %ì •ìƒë…¸ë“œì—ê²Œ
                        %     n_events(k, request_node) = n_events(k, request_node) + 1;
-                       % end %black hole attackÀº Á¤»óÀÌ°Ç mali°Ç ÆĞÅ¶À»ÁË´Ù µå¶øÇÔ
+                       % end %black hole attackì€ ì •ìƒì´ê±´ maliê±´ íŒ¨í‚·ì„ì£„ë‹¤ ë“œëí•¨
                     end
                 end
             end 
@@ -105,7 +105,7 @@ for i = 1:(ttime/30)
 
 
     % LTO & d
-    LTO = zeros(N,N); %Active Trust¿¡¼­ LTO´Â direction Trust
+    LTO = zeros(N,N); %Active Trustì—ì„œ LTOëŠ” direction Trust
     for k = 1:N
         for l = 1:N
             if k == l || (p_events(k,l)+n_events(k,l)) == 0
@@ -118,10 +118,10 @@ for i = 1:(ttime/30)
     end
     d(i) = d(i)/(N*(N-1));
     %attenuation function applied to directional trust
-    T_mat(:,:,i) = LTO; %ÇÑ È© ³»ÀÇ µ¥ÀÌÅÍ Àü¼ÛÀ» °üÂûÇÏ¿©, T_mat¿¡ Àû¸³.
+    T_mat(:,:,i) = LTO; %í•œ í™‰ ë‚´ì˜ ë°ì´í„° ì „ì†¡ì„ ê´€ì°°í•˜ì—¬, T_matì— ì ë¦½.
 end
 
-TT_mat = zeros(N,N,10); %attenuation °í·Á
+TT_mat = zeros(N,N,10); %attenuation ê³ ë ¤
 TT_mat(:,:,1) = T_mat(:,:,1);
 TT_mat(:,:,2) = (T_mat(:,:,1).*(G^1) + T_mat(:,:,2).*(G^0))./2;
 TT_mat(:,:,3) = (T_mat(:,:,1).*(G^2) + T_mat(:,:,2).*(G^1) + T_mat(:,:,3).*(G^0) )./3;
@@ -132,14 +132,14 @@ TT_mat(:,:,7) = (T_mat(:,:,1).*(G^6) + T_mat(:,:,2).*(G^5) + T_mat(:,:,3).*(G^4)
 TT_mat(:,:,8) = (T_mat(:,:,1).*(G^7) + T_mat(:,:,2).*(G^6) + T_mat(:,:,3).*(G^5) + T_mat(:,:,4).*(G^4) + T_mat(:,:,5).*(G^3) + T_mat(:,:,6).*(G^2) + T_mat(:,:,2).*(G^1) + T_mat(:,:,8).*(G^0))./8;
 TT_mat(:,:,9) = (T_mat(:,:,1).*(G^8) + T_mat(:,:,2).*(G^7) + T_mat(:,:,3).*(G^6) + T_mat(:,:,4).*(G^5) + T_mat(:,:,5).*(G^4) + T_mat(:,:,6).*(G^3) + T_mat(:,:,2).*(G^2) + T_mat(:,:,8).*(G^1)+T_mat(:,:,9).*(G^0) )./9;
 TT_mat(:,:,10) = (T_mat(:,:,1).*(G^9) + T_mat(:,:,2).*(G^8) + T_mat(:,:,3).*(G^7) + T_mat(:,:,4).*(G^6) + T_mat(:,:,5).*(G^5) + T_mat(:,:,6).*(G^4) + T_mat(:,:,7).*(G^3) + T_mat(:,:,8).*(G^2)+T_mat(:,:,9).*(G^1) + T_mat(:,:,10).*(G^0))./10;
-%Attenation Àû¿ë³¡ 
+%Attenation ì ìš©ë 
  
 
 
 
 
 
-%À§ °úÁ¤À» ÅëÇØ T_mat ÀÌ ´Ù ¸ğ¿©Á³´Ù°í °¡Á¤
+%ìœ„ ê³¼ì •ì„ í†µí•´ T_mat ì´ ë‹¤ ëª¨ì—¬ì¡Œë‹¤ê³  ê°€ì •
 % next recommendation Trust Merging process
 
 
@@ -164,7 +164,7 @@ end
 
 
 
-% SR, GR ÃÖÁ¾ ¹İÈ¯, SRGRÀÇ 93¹ø¿¡ ´ëÇÑ °ªÀº 1·Î °íÁ¤ÇÑ´Ù
+% SR, GR ìµœì¢… ë°˜í™˜, SRGRì˜ 93ë²ˆì— ëŒ€í•œ ê°’ì€ 1ë¡œ ê³ ì •í•œë‹¤
 
 T__mat = ones(N+1,N+1,10);
 for a = 1:10
