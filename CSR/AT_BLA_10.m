@@ -4,7 +4,7 @@ global YY
 
 %global mali_node
 ttime = 300;
-R = 120; %  Àü¼Û¹İ°æ
+R = 120; %  ì „ì†¡ë°˜ê²½
 noOfNodes  = 500;
 
 hold on;
@@ -15,10 +15,10 @@ node_data = zeros(600, 2*noOfNodes+1);
 matrix = zeros(noOfNodes);
 dist = zeros(1,noOfNodes);
 
-% L ¹İÁö¸§ Á÷°æ¸¸Å­ ¿øÇüÀ¸·Î ·£´ı ³ëµå ¹ß»ı
+% L ë°˜ì§€ë¦„ ì§ê²½ë§Œí¼ ì›í˜•ìœ¼ë¡œ ëœë¤ ë…¸ë“œ ë°œìƒ
 x = zeros( 1 , noOfNodes);
 y = zeros( 1, noOfNodes);
-for i = 1 : noOfNodes-1 % ³ëµå¼ö
+for i = 1 : noOfNodes-1 % ë…¸ë“œìˆ˜
    x(i) = (-1 + 2 * rand(1)) * L;
    y(i) =  sqrt(L^2 - x(i)^2)*(-1 + 2 *rand(1));
     dist(i) = sqrt(x(i)^2+y(i)^2);
@@ -38,7 +38,7 @@ end
 
 
 dist2 = dist;
-List = []; %¶ó¿ìÆÃ ¼Ò½º³ëµå Á¤ÇÏ±â
+List = []; %ë¼ìš°íŒ… ì†ŒìŠ¤ë…¸ë“œ ì •í•˜ê¸°
 for i = 1 : round(0.2 * noOfNodes)
     [a b] = max(dist2);
     dist2(b) = 0;
@@ -58,8 +58,8 @@ YY = zeros(600,noOfNodes);
 sink = noOfNodes;
 for i = 1: 600
      for k = 1:noOfNodes
-        XX(i,k) = x(k);     % XX´Â ³ëµåµ¥ÀÌÅÍ¿¡¼­ x¼ººĞ¸¸ ÃßÃâ (600 x node¼ö+½ÌÅ©)
-        YY(i,k) = y(k);   % YY´Â ³ëµåµ¥ÀÌÅÍ¿¡¼­ yÁÂÇ¥¸¸ ÃßÃâ (600 x node¼ö+½ÌÅ©)
+        XX(i,k) = x(k);     % XXëŠ” ë…¸ë“œë°ì´í„°ì—ì„œ xì„±ë¶„ë§Œ ì¶”ì¶œ (600 x nodeìˆ˜+ì‹±í¬)
+        YY(i,k) = y(k);   % YYëŠ” ë…¸ë“œë°ì´í„°ì—ì„œ yì¢Œí‘œë§Œ ì¶”ì¶œ (600 x nodeìˆ˜+ì‹±í¬)
     end
 end
 %-------------------
@@ -72,8 +72,8 @@ end
 %0----------
 
 
-%%%¶ó¿ìÆÃ ¹İº¹ºÎ : 1~ 600¶ó¿îµå±îÁö,
-%%% s->d´Â ÀÏ´Ü ÀÓÀÇ·Î Á¤ÇÔ 
+%%%ë¼ìš°íŒ… ë°˜ë³µë¶€ : 1~ 600ë¼ìš´ë“œê¹Œì§€,
+%%% s->dëŠ” ì¼ë‹¨ ì„ì˜ë¡œ ì •í•¨ 
 mp = 0;
 alpha = 1;
 Sum_S_ratio = 0;
@@ -84,8 +84,8 @@ Count = 0;
 Count2=0;
 Count3=0;
 
-Time=600; % ¸îÈ¸Â÷±îÁö ¶ó¿ìÆÃÀ» ÁøÇàÇÒ°ÇÁö. ÃÖ´ë 600
-z=10; %z´Â ·£´ı¼ºÀ» ÃÖ¼ÒÈ­ÇÏ±â À§ÇÑ iteration ¼ıÀÚ
+Time=600; % ëª‡íšŒì°¨ê¹Œì§€ ë¼ìš°íŒ…ì„ ì§„í–‰í• ê±´ì§€. ìµœëŒ€ 600
+z=10; %zëŠ” ëœë¤ì„±ì„ ìµœì†Œí™”í•˜ê¸° ìœ„í•œ iteration ìˆ«ì
 
 SR_per_Iteration = zeros(1,z);
 MR_per_Iteration = zeros(1,z);
@@ -93,7 +93,7 @@ Result = [];
 Result2 = [];
 
 
-%h = waitbar(0,'ÁøÇà »óÈ²'); % Á¦¸ñ ³Ö¾î¼­ waitbar¸¦ ¶ç¿ò.
+%h = waitbar(0,'ì§„í–‰ ìƒí™©'); % ì œëª© ë„£ì–´ì„œ waitbarë¥¼ ë„ì›€.
 
 
 %-----------------
@@ -104,28 +104,28 @@ for mp = 0.1 : 0.05 :0.5
         [T__mat,T_mat] = Active_BLAA(noOfNodes-1, node_data, mp);
         
         
-        for s = 1:noOfNodes-1 % ¼Ò½º 1ºÎÅÍ n-1±îÁö º¯È­¸¦ÁÜ, Dest´Â n
-              %»õ·Î¿î s°¡ ÁöÁ¤µÇ¸é, ¿ø·¡ÀÇ cost matrix¸¦ º¹±¸
-             C = T__mat; % cost matrix¸¦ C¶ó´Â Àü¿ªº¯¼ö·Î ´ëÀÔ
-                         % s°¡ ¹Ù²ğ¶§¸¶´Ù C´Â ´Ù½Ã cost matrix¿øº»À¸·Î ¹Ù²ñ
+        for s = 1:noOfNodes-1 % ì†ŒìŠ¤ 1ë¶€í„° n-1ê¹Œì§€ ë³€í™”ë¥¼ì¤Œ, DestëŠ” n
+              %ìƒˆë¡œìš´ sê°€ ì§€ì •ë˜ë©´, ì›ë˜ì˜ cost matrixë¥¼ ë³µêµ¬
+             C = T__mat; % cost matrixë¥¼ Cë¼ëŠ” ì „ì—­ë³€ìˆ˜ë¡œ ëŒ€ì…
+                         % sê°€ ë°”ë€”ë•Œë§ˆë‹¤ CëŠ” ë‹¤ì‹œ cost matrixì›ë³¸ìœ¼ë¡œ ë°”ë€œ
              
              if (find(s == mali_node) >=1)
              else
                
-                for n = 60 : 60 : Time %10¶ó¿îµå°£ 
+                for n = 60 : 60 : Time %10ë¼ìš´ë“œê°„ 
                     mp, n
                     [mal_ratio,S_ratio,sp] = Active_R2(C,noOfNodes,n,s);
                     if length(sp) ~= 2
-                    Count2= Count2 +1;   %¶ó¿ìÆÃ ½ÇÇàÀÇ ÃÑ Ä«¿îÆ®    
-                    %Active Trust¿¡¼­´Â ÇÑ¹ø °ÅÄ£ ³ëµå´Â ´Ù½Ã °ÅÄ¡Áö ¾ÊÀ½.
+                    Count2= Count2 +1;   %ë¼ìš°íŒ… ì‹¤í–‰ì˜ ì´ ì¹´ìš´íŠ¸    
+                    %Active Trustì—ì„œëŠ” í•œë²ˆ ê±°ì¹œ ë…¸ë“œëŠ” ë‹¤ì‹œ ê±°ì¹˜ì§€ ì•ŠìŒ.
                                        
                                        
-                    if S_ratio ~= -1  %routingÀÌ ¼º°øµÈ °æ¿ì
-                       Sum_S_ratio = Sum_S_ratio + S_ratio; %¶ó¿ìÆÃ °¡´ÉÇÏ¸é S_ratio¸¦ ´©Àû
-                       Sum_mal_ratio = Sum_mal_ratio + mal_ratio; %¶ó¿ìÆÃ °¡´É½Ã mal_ratio¸¦ ´©Àû
-                       Count = Count+1; % ¼º°øÇßÀ»¶§¸¸ ¼¼´Â Ä«¿îÆ®
+                    if S_ratio ~= -1  %routingì´ ì„±ê³µëœ ê²½ìš°
+                       Sum_S_ratio = Sum_S_ratio + S_ratio; %ë¼ìš°íŒ… ê°€ëŠ¥í•˜ë©´ S_ratioë¥¼ ëˆ„ì 
+                       Sum_mal_ratio = Sum_mal_ratio + mal_ratio; %ë¼ìš°íŒ… ê°€ëŠ¥ì‹œ mal_ratioë¥¼ ëˆ„ì 
+                       Count = Count+1; % ì„±ê³µí–ˆì„ë•Œë§Œ ì„¸ëŠ” ì¹´ìš´íŠ¸
                        
-                       if length(sp) >=3 %¶ó¿ìÆÃÀÌ ¼º°øÀûÀÌ°í, °æÀ¯³ëµå°¡ ÀÖ´Ù¸é,
+                       if length(sp) >=3 %ë¼ìš°íŒ…ì´ ì„±ê³µì ì´ê³ , ê²½ìœ ë…¸ë“œê°€ ìˆë‹¤ë©´,
                            for a = 2:length(sp)-1
                                C(:,sp(a),:) =0;
                            end                   
@@ -134,8 +134,8 @@ for mp = 0.1 : 0.05 :0.5
                     end
                 end
              end
-        end %source 1~ 499±îÁö ÇÑ¹ÙÄû µ¼(°¢ 10¶ó¿îµå·Î)
-        %ÀÌ¶§ Ä«¿îÆ®µµ È½¼ö¸¸Å­ ´©ÀûµÇ¾îÀÖÀ½
+        end %source 1~ 499ê¹Œì§€ í•œë°”í€´ ë”(ê° 10ë¼ìš´ë“œë¡œ)
+        %ì´ë•Œ ì¹´ìš´íŠ¸ë„ íšŸìˆ˜ë§Œí¼ ëˆ„ì ë˜ì–´ìˆìŒ
         SR_per_Iteration(i) = Sum_S_ratio/Count2;
         MR_per_Iteration(i) = Sum_mal_ratio/Count;
         Count=0;
@@ -157,4 +157,4 @@ subplot(2,1,2)
 plot(mp,Result2, 'b-*')                
 grid on                
                 
-%%% active trust bla 1È©Á¦°Å¹öÀü. 10È¸ iteration 120m
+%%% active trust bla 1í™‰ì œê±°ë²„ì „. 10íšŒ iteration 120m
