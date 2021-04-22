@@ -1,9 +1,9 @@
 function [mal_ratio,S_ratio,sp] = SP_Routing(noOfNodes,n,s,d)
-% ÀÌ ¹öÀüÀº GR¾ÈµÇ´Â³ð ÀÏ´Ü°Å¸£°í,
-% ¸¸¾à path°¡ ¾øÀ»½Ã GR¾ÈµÇ´Â³ð ¾îÂ¿¼ö ¾øÀÌÆ÷ÇÔ½ÃÄÑ¼­ ¶ó¿ìÆÃÀ» ÁøÇà
+% ì´ ë²„ì „ì€ GRì•ˆë˜ëŠ”path ì¼ë‹¨ê±°ë¥´ê³ ,
+% ë§Œì•½ pathê°€ ì—†ì„ì‹œ GRì•ˆë˜ëŠ” path ì–´ì©”ìˆ˜ ì—†ì´í¬í•¨ì‹œì¼œì„œ ë¼ìš°íŒ…ì„ ì§„í–‰
 
-%GR, SRÀÌ ÀúÀåµÇ¾îÀÖ´Ù°í °¡Á¤.
-%SR = (92 x 92 x 10) ÃÑ 10¶ó¿îµå, 1¶ó¿îµå´Â ³ëµå µ¥ÀÌÅÍ¿¡¼­ 60È¸
+%GR, SRì´ ì €ìž¥ë˜ì–´ìžˆë‹¤ê³  ê°€ì •.
+%SR = (92 x 92 x 10) ì´ 10ë¼ìš´ë“œ, 1ë¼ìš´ë“œëŠ” ë…¸ë“œ ë°ì´í„°ì—ì„œ 60íšŒ
 %GR = (92 x 1 x 10)
 %CSR = (92 x 92 x 10)
 R=120;
@@ -15,7 +15,7 @@ I_th_Yloc = YY(n,:);
 
     
     
-    %¶ó¿ìÆÃ ¸ÅÆ®¸¯½º¸¦ ´Ù½Ã¸¸µë
+    %ë¼ìš°íŒ… ë§¤íŠ¸ë¦­ìŠ¤ë¥¼ ë‹¤ì‹œë§Œë“¬
    for i = 1:noOfNodes
       for j = 1:noOfNodes
              distance = sqrt((I_th_Xloc(i) - I_th_Xloc(j))^2 + (I_th_Yloc(i) - I_th_Yloc(j))^2);
@@ -28,12 +28,12 @@ I_th_Yloc = YY(n,:);
                  end
       end
    end
-   %for¹®À¸·Î ´Ù½Ã matrixº¹±¸Çß°í, ´Ù½Ã ¶ó¿õÆÃ ½ÃÀü
+   %forë¬¸ìœ¼ë¡œ ë‹¤ì‹œ matrixë³µêµ¬í–ˆê³ , ë‹¤ì‹œ ë¼ì›…íŒ… ì‹œì „
    [sp, spcost] = dijkstra_P(matrix, s, d);
  sp
 
  
-%%%%%¶ó¿ìÆÃ °æ·Î¿¡¼­ mal ³ëµå °¹¼ö È®ÀÎ
+%%%%%ë¼ìš°íŒ… ê²½ë¡œì—ì„œ mal ë…¸ë“œ ê°¯ìˆ˜ í™•ì¸
 
 
 
@@ -41,20 +41,20 @@ I_th_Yloc = YY(n,:);
 
 no_of_mal =0;
 
-if sp ~= 0  % °æ·Î°¡ Á¸ÀçÇÑ´Ù¸é
+if sp ~= 0  % ê²½ë¡œê°€ ì¡´ìž¬í•œë‹¤ë©´
 
-   for i = 2:length(sp)  %¼Ò½º´ÙÀ½ ³ëµåºÎÅÍ mal °Ë»ç
+   for i = 2:length(sp)  %ì†ŒìŠ¤ë‹¤ìŒ ë…¸ë“œë¶€í„° mal ê²€ì‚¬
 
        if (find(mali_node == sp(i)) >= 1)
 
-      no_of_mal = no_of_mal +1;  %°á±¹ no_of_mal Àº S,D Á¦¿ÜÇÑ malÀ» Ä«¿îÆ®ÇÑ´Ù.
+      no_of_mal = no_of_mal +1;  %ê²°êµ­ no_of_mal ì€ S,D ì œì™¸í•œ malì„ ì¹´ìš´íŠ¸í•œë‹¤.
         else
         
         end
    end
    
-    if length(sp) == 2 %1È©ÀÎ°æ¿ì´Â mal_ratio 
-% °æ·Î¾øÀÌ ÇÑÈ©À¸·Î °¥¶§´Â mal_ratio¸¦ 0À¸·ÎÇÔ. 
+    if length(sp) == 2 %1í™‰ì¸ê²½ìš°ëŠ” mal_ratio 
+% ê²½ë¡œì—†ì´ í•œí™‰ìœ¼ë¡œ ê°ˆë•ŒëŠ” mal_ratioë¥¼ 0ìœ¼ë¡œí•¨. 
       mal_ratio = 0; 
       S_ratio = (0^(no_of_mal)) * (0.95^(length(sp) - no_of_mal -1 ))
       
@@ -66,7 +66,7 @@ if sp ~= 0  % °æ·Î°¡ Á¸ÀçÇÑ´Ù¸é
 
     end
     
-else  %°æ·Î°¡ Á¸ÀçÇÏÁö ¾Ê´Â´Ù¸é
+else  %ê²½ë¡œê°€ ì¡´ìž¬í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´
 
 S_ratio = -1;
 mal_ratio = -1;
